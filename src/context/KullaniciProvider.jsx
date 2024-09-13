@@ -1,22 +1,31 @@
-import React, { createContext, useEffect, useState } from 'react'
+import React from "react";
+import { useEffect } from "react";
+import { useState } from "react";
+import { createContext } from "react";
+
+//! 1- creating context
+export const KullaniciContext = createContext();
+//! 2- Provider
+const KullaniciProvider = ({ children }) => {
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    fetch("https://api.github.com/users")
+      .then((res) => res.json())
+      .then((veri) => setUsers(veri));
+  }, []);
+
+  const changeWidth = (id, width) => {
+    setUsers(users.map((a) => (a.id === id ? { ...a, width: width } : a)));
+  };
 
 
-export const KulllaniciContext = createContext()
-
-
-const KullaniciProvider = ({children}) => {
-    const [users, setUsers] = useState([])
-    useEffect(() => { fetch("https://api.github.com/users").then((res) => res.json()).then((veri) => console.log(veri))
-        
-    },[])
-   
 
   return (
-    <KulllaniciContext.Provider value={{}}>
-    {children}
+    <KullaniciContext.Provider value={{ users, changeWidth }}>
+      {children}
+    </KullaniciContext.Provider>
+  );
+};
 
-    </KulllaniciContext.Provider>
-  )
-}
-
-export default KullaniciProvider
+export default KullaniciProvider;
