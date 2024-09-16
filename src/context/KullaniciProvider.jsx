@@ -19,8 +19,6 @@ const KullaniciProvider = ({ children }) => {
     setUsers(users.map((a) => (a.id === id ? { ...a, width: width } : a)));
   };
 
-
-
   return (
     <KullaniciContext.Provider value={{ users, changeWidth }}>
       {children}
